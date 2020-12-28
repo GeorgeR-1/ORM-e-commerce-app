@@ -22,4 +22,6 @@ public class AttributeValue extends BaseEntity<Integer>{
 
 
 
+
+
 }
