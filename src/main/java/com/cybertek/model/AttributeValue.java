@@ -16,7 +16,7 @@ public class AttributeValue extends BaseEntity<Integer>{
     private String name;
     private String description;
 
-    @ManyToOne // cascade???
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "attribute_id")
     private Attribute attribute;
 
