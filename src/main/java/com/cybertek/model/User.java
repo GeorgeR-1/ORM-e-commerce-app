@@ -1,12 +1,11 @@
 package com.cybertek.model;
 
+import com.cybertek.enums.ProductAndUserStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -26,5 +25,7 @@ public class User extends BaseEntity<Long>{
     private String email;
     private String phoneNumber;
 
+    @Enumerated(EnumType.STRING)
+    private ProductAndUserStatus status;
 
 }

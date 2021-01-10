@@ -1,5 +1,6 @@
 package com.cybertek.model;
 
+import com.cybertek.enums.ProductAndUserStatus;
 import com.cybertek.enums.ProductCondition;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 public class Product extends BaseEntity<Long>{
 
     private String name;
+
     @Column(columnDefinition = "text")
     private String description;
 
@@ -25,6 +27,9 @@ public class Product extends BaseEntity<Long>{
     private BigDecimal weight;
 
     private Integer quantity;
+
+    @Enumerated(EnumType.STRING)
+    private ProductAndUserStatus status;
 
     @Enumerated(EnumType.STRING)
     private ProductCondition condition;
@@ -48,7 +53,6 @@ public class Product extends BaseEntity<Long>{
     joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "attribute_value_id"))
     private List<AttributeValue> attributeValue;
-
 
 
 
