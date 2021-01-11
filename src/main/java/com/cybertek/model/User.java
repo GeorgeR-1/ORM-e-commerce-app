@@ -20,9 +20,14 @@ public class User extends BaseEntity<Long>{
 
     private LocalDate birthDate;
 
+    @Column(unique = true,nullable = false)
     private String username;
+
     private String password;
+
+    @Column(unique = true,nullable = false)
     private String email;
+
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
