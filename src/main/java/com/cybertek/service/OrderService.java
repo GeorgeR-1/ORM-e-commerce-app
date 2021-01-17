@@ -1,11 +1,14 @@
 package com.cybertek.service;
 
+import com.cybertek.enums.OrderStatus;
 import com.cybertek.model.Order;
+import com.cybertek.model.User;
 import com.cybertek.repository.OrderRepository;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +21,7 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
+    @Transactional
     public Order create(Order order) throws Exception {
 
         Optional<Order> foundedOrder = orderRepository.findById(order.getId());
@@ -39,6 +43,7 @@ public class OrderService {
                 .orElseThrow(() -> new Exception("This order does not exist"));
     }
 
+    @Transactional
     public void update(Order order) throws Exception {
 
         orderRepository.findById(order.getId())
@@ -47,7 +52,9 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-
+    public List<Order> readByUserAndStatus(User user, OrderStatus status) throws Exception {
+        return orderRepository.findByUserAndStatus(user,status);
+    }
 
 
 

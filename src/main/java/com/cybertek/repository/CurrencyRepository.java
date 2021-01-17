@@ -11,5 +11,5 @@ public interface CurrencyRepository extends JpaRepository<Currency,Integer> {
 
     Optional<Currency> findCurrencyByNameAndSymbol(String name, String symbol);
 
-    Optional<Currency> findByName(String name);
+    Optional<Currency> findByNameAndSymbol(String name, String symbol);
 }

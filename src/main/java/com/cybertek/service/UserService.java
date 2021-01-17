@@ -1,9 +1,13 @@
 package com.cybertek.service;
 
+
+import com.cybertek.enums.ProductAndUserStatus;
 import com.cybertek.model.User;
 import com.cybertek.repository.UserRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -17,6 +21,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public User create(User user) throws Exception {
         Optional<User> foundedUser = userRepository.findByUsername(user.getUsername());
 
@@ -30,7 +35,7 @@ public class UserService {
     }
 
     public List<User> readAll(){
-        return userRepository.findAll();
+        return userRepository.findAll(Sort.by("id"));
     }
 
     public User readByUsername(String username){
@@ -43,11 +48,32 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchElementException("This user does not exist"));
     }
 
+    @Transactional
     public void update(User user){
-        userRepository.findByUsername(user.getUsername())
+        User foundedUser =userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new NoSuchElementException("This user does not exist"));
+
+//        if(!foundedUser.getEmail().equals(user.getEmail())){
+//            //TODO check for confirmation
+//        }
+
+        user.setId(foundedUser.getId());
 
         userRepository.save(user);
     }
+
+    @Transactional
+    public void deactivateAccount(Long id) throws Exception {
+
+        User foundedUser = userRepository.findById(id)
+                .orElseThrow(() -> new Exception("user does not exist"));
+
+        foundedUser.setStatus(ProductAndUserStatus.SUSPENDED);
+        userRepository.save(foundedUser);
+
+    }
+
+
+
 
 }

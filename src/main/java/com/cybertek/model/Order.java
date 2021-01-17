@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class Order extends BaseEntity<Long>{
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus status=OrderStatus.PENDING;
 
     private LocalDate orderDate;
 

@@ -6,6 +6,7 @@ import com.cybertek.repository.CategoryRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ public class CategoryService {
         this.subCategoryService = subCategoryService;
     }
 
+    @Transactional
     public Category create(Category category) throws Exception {
 
         Optional<Category> founded = categoryRepository.findByName(category.getName());
@@ -32,6 +34,7 @@ public class CategoryService {
 
     }
 
+    @Transactional
     public void deleteById(Integer id) throws Exception {
         Category foundedCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new Exception("category doesn't exist"));
@@ -48,6 +51,7 @@ public class CategoryService {
 
     }
 
+    @Transactional
     public void update(Category category) throws Exception {
         categoryRepository.findByName(category.getName())
                 .orElseThrow(() -> new Exception("Category does not exist"));

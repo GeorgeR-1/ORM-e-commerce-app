@@ -6,6 +6,8 @@ import com.cybertek.model.Uom;
 import com.cybertek.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -17,14 +19,27 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product create(Product product){
+    @Transactional
+    public Product create(Product product) throws Exception {
+
+        if(product.getName() == null || product.getPrice().compareTo(BigDecimal.ZERO) < 0 || product.getQuantity() <= 0){
+            throw new Exception("Something went wrong please try again");
+        }
+
+
         return productRepository.save(product);
     }
-
+    @Transactional
     public void update(Product product) throws Exception {
 
         productRepository.findById(product.getId())
                 .orElseThrow(() -> new Exception("This product does not exist"));
+
+        if(product.getName() == null || product.getPrice().compareTo(BigDecimal.ZERO) < 0 || product.getQuantity() <= 0){
+            throw new Exception("Something went wrong please try again");
+        }
+
+        productRepository.save(product);
     }
 
     public List<Product> readAll(){

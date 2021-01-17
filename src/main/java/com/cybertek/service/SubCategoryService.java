@@ -5,6 +5,7 @@ import com.cybertek.model.SubCategory;
 import com.cybertek.repository.SubCategoryRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ public class SubCategoryService {
         this.subCategoryRepository = subCategoryRepository;
     }
 
+    @Transactional
     public SubCategory create(SubCategory subCategory) throws Exception {
 
         Optional<SubCategory> foundSubCategory =
@@ -31,6 +33,7 @@ public class SubCategoryService {
 
     }
 
+    @Transactional
     public void update(SubCategory subCategory) throws Exception {
 
         SubCategory foundedCategory = subCategoryRepository.findByNameAndCategoryId(subCategory.getName(), subCategory.getCategory().getId())
@@ -53,6 +56,7 @@ public class SubCategoryService {
 
     }
 
+    @Transactional
     public void deleteById(Integer id) throws Exception {
 
         SubCategory foundedSubCategory = subCategoryRepository

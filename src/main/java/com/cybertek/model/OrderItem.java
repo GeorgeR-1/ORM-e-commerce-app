@@ -4,6 +4,7 @@ import com.cybertek.enums.OrderStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @Table(name = "orders_items")
+@Where(clause = "is_deleted=false")
 public class OrderItem extends BaseEntity<Long>{
 
     private Integer quantity;
@@ -23,7 +25,7 @@ public class OrderItem extends BaseEntity<Long>{
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     private Order order;
 

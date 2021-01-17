@@ -7,6 +7,7 @@ import com.cybertek.repository.ProductRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ public class CurrencyService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public Currency create(Currency currency) throws Exception {
 
         Optional<Currency> foundedCurrency = currencyRepository
@@ -33,6 +35,7 @@ public class CurrencyService {
         return currencyRepository.save(currency);
     }
 
+    @Transactional
     public void update(Currency currency) throws Exception {
 
         currencyRepository.findCurrencyByNameAndSymbol(currency.getName(), currency.getSymbol())
@@ -45,13 +48,21 @@ public class CurrencyService {
         return currencyRepository.findAll(Sort.by("name"));
     }
 
-    public Currency findByName(String name) throws Exception {
-        return currencyRepository.findByName(name)
-                .orElseThrow(() -> new Exception("This currency can not be found"));
+    public Currency readById(Integer id) throws Exception {
+        return currencyRepository.findById(id).orElseThrow(() -> new Exception("This currency does not exist"));
     }
 
-    public void deleteByName(String name) throws Exception {
-        Currency foundedCurrency = currencyRepository.findByName(name)
+    public Currency findByNameAndSymbol(String name, String symbol) throws Exception {
+        return currencyRepository.findByNameAndSymbol(name,symbol)
+                .orElseThrow(() -> new Exception("This currency can not be found"));
+
+
+    }
+
+    @Transactional
+    public void deleteByNameAndSymbol(String name, String symbol) throws Exception {
+
+        Currency foundedCurrency = currencyRepository.findByNameAndSymbol(name,symbol)
                 .orElseThrow(() -> new Exception("This currency does not exist"));
 
         List<Product> productList = productRepository.findAllByCurrency(foundedCurrency);

@@ -6,6 +6,7 @@ import com.cybertek.repository.ProductRepository;
 import com.cybertek.repository.UomRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ public class UomService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public Uom create(Uom uom) throws Exception {
 
         Optional<Uom> foundedUom = uomRepository.findByName(uom.getName());
@@ -31,6 +33,7 @@ public class UomService {
         return uomRepository.save(uom);
     }
 
+    @Transactional
     public void update(Uom uom) throws Exception {
 
         Uom foundedUom = uomRepository.findByName(uom.getName())
@@ -40,6 +43,7 @@ public class UomService {
 
     }
 
+    @Transactional
     public void deleteById(Integer id) throws Exception {
 
         Uom uom = uomRepository.findById(id)

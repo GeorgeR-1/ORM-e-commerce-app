@@ -2,7 +2,7 @@ package com.cybertek.enums;
 
 public enum OrderStatus {
     PAYED,
-    PENDING_PAYMENT,
+    PENDING,
     SHIPPED,
     APPROVED,
     CANCELLED,
