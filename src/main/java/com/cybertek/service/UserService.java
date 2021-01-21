@@ -1,6 +1,5 @@
 package com.cybertek.service;
 
-
 import com.cybertek.enums.ProductAndUserStatus;
 import com.cybertek.model.User;
 import com.cybertek.repository.UserRepository;
@@ -72,8 +71,6 @@ public class UserService {
         userRepository.save(foundedUser);
 
     }
-
-
 
 
 }
