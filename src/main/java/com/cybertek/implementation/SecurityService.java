@@ -1,4 +1,4 @@
-package com.cybertek.service;
+package com.cybertek.implementation;
 
 import com.cybertek.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,10 +11,10 @@ import java.util.ArrayList;
 @Service
 public class SecurityService implements UserDetailsService {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
-    public SecurityService(UserService userService) {
-        this.userService = userService;
+    public SecurityService(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class SecurityService implements UserDetailsService {
 
     private User currentUser(String s){
 
-        return s.contains("@") ? userService.readByEmail(s) : userService.readByUsername(s);
+        return s.contains("@") ? userServiceImpl.readByEmail(s) : userServiceImpl.readByUsername(s);
 
     }
 }

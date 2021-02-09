@@ -1,13 +1,11 @@
 package com.cybertek.config;
 
-import com.cybertek.service.SecurityService;
+import com.cybertek.implementation.SecurityService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
@@ -39,13 +37,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .defaultSuccessUrl("/")
                     .permitAll()
                 .and()
-                    .logout()
+                .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .logoutSuccessUrl("/")
                 .and()
-                    .rememberMe()
-                    .tokenValiditySeconds(3000)
-                .and();
+                .rememberMe()
+                .tokenValiditySeconds(3000)
+                .key("cybertekSecret")
+                .userDetailsService(securityService);
 
     }
 }
