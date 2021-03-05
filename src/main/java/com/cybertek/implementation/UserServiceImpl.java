@@ -1,10 +1,16 @@
 package com.cybertek.implementation;
 
 import com.cybertek.enums.ProductAndUserStatus;
+import com.cybertek.enums.TokenType;
+import com.cybertek.model.ConfirmationToken;
 import com.cybertek.model.User;
+import com.cybertek.model.dto.MailDTO;
 import com.cybertek.repository.UserRepository;
+import com.cybertek.service.ConfirmationTokenService;
 import com.cybertek.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,10 +21,15 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    @Value("${app.local-url}")
+    String url;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    private final UserRepository userRepository;
+    private final ConfirmationTokenService confirmationTokenService;
+
+    public UserServiceImpl(UserRepository userRepository, ConfirmationTokenService confirmationTokenService) {
         this.userRepository = userRepository;
+        this.confirmationTokenService = confirmationTokenService;
     }
 
     @Transactional
@@ -31,7 +42,11 @@ public class UserServiceImpl implements UserService {
             throw new Exception("This user already exists");
         }
 
-        return userRepository.save(user);
+        User userCreated = userRepository.save(user);
+
+        createToken(userCreated,TokenType.CONFIRMED);
+
+        return userCreated;
     }
 
     public List<User> readAll(){
@@ -71,6 +86,35 @@ public class UserServiceImpl implements UserService {
         foundedUser.setStatus(ProductAndUserStatus.SUSPENDED);
         userRepository.save(foundedUser);
 
+    }
+
+    private void createToken(User user, TokenType tokenType){
+
+        ConfirmationToken confirmationToken = new ConfirmationToken(user, tokenType);
+
+        ConfirmationToken token = confirmationTokenService.save(confirmationToken);
+
+        MailDTO mailDTO = MailDTO.builder()
+                .emailTo(user.getEmail())
+                .message("To confirm this account please click here: ")
+                .token(token.getToken())
+                .url(url + "/confirmation?token=")
+                .subject("Confirm your account")
+                .build();
+
+        sendEmail(mailDTO);
+
+    }
+
+    private void sendEmail(MailDTO mailDTO){
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+
+        mailMessage.setTo(mailDTO.getEmailTo());
+        mailMessage.setSubject(mailDTO.getSubject());
+        mailMessage.setText(mailDTO.getMessage() + mailDTO.getUrl() + mailDTO.getToken());
+
+        confirmationTokenService.sendEmail(mailMessage);
     }
 
 

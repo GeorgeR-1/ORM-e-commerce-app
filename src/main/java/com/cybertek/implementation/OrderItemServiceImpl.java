@@ -95,5 +95,10 @@ public class OrderItemServiceImpl implements OrderItemService {
         orderItemRepository.save(orderItem);
     }
 
+    @Override
+    public List<Order> readByUserAndStatus(User user, OrderStatus status) throws Exception {
+        return null;
+    }
+
 
 }

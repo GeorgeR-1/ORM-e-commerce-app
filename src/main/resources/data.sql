@@ -1,0 +1,1 @@
+INSERT INTO public.users (is_deleted, birth_date, email, first_name, last_name, password, phone_number, status, username, is_verified) VALUES (false, '2021-02-05', 'admin@admin.com', 'Admin', 'Admin', '$2a$10$Q7ilQ6Hv11qpU0T7xfMzMeqxoPXkvhTVXxFqg0UL2xvLnhNqB7vba', '3123123123', 'ACTIVE', 'admin', true);

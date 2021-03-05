@@ -1,5 +1,6 @@
 package com.cybertek.filter;
 
+import com.cybertek.enums.ProductAndUserStatus;
 import com.cybertek.implementation.SecurityService;
 import com.cybertek.model.User;
 import com.cybertek.util.JWTUtil;
@@ -58,8 +59,8 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
     private boolean checkIfUserIsValid(String username) {
-        UserDetails currentUser = securityService.loadUserByUsername(username);
-        return currentUser != null;
+        User currentUser = securityService.currentUser(username);
+        return currentUser != null && currentUser.getIsVerified() && currentUser.getStatus() == ProductAndUserStatus.ACTIVE;
     }
 
 }

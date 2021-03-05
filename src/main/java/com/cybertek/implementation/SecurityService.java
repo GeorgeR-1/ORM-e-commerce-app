@@ -32,7 +32,7 @@ public class SecurityService implements UserDetailsService {
 
     }
 
-    private User currentUser(String s){
+    public User currentUser(String s){
 
         return s.contains("@") ? userServiceImpl.readByEmail(s) : userServiceImpl.readByUsername(s);
 

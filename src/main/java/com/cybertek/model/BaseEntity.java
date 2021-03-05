@@ -16,6 +16,6 @@ public abstract class BaseEntity<T>{
     private T id;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
 }

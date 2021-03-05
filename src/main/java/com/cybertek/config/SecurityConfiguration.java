@@ -31,6 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private static final String[] permittedUrls ={
+            "/create",
             "/authenticate",
             "/confirmation",
             "/api/p1**",

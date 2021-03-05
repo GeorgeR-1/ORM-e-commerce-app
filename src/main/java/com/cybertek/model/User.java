@@ -15,26 +15,29 @@ import java.time.LocalDate;
 @Table(name = "users")
 public class User extends BaseEntity<Long>{
 
-    @Column(nullable = false)
+
     private String firstName;
 
-    @Column(nullable = false)
+
     private String lastName;
 
-    @Column(nullable = false)
+
     private LocalDate birthDate;
 
-    @Column(unique = true,nullable = false)
+    @Column(unique = true)
     private String username;
 
-    @Column(nullable = false)
+
     private String password;
 
-    @Column(unique = true,nullable = false)
+    @Column(unique = true)
     private String email;
 
-    @Column(nullable = false)
+
     private String phoneNumber;
+
+    @Column(name = "is_verified")
+    private Boolean isVerified;
 
     @Enumerated(EnumType.STRING)
     private ProductAndUserStatus status;
