@@ -18,6 +18,8 @@ public interface UserService {
 
     void deactivateAccount(Long id) throws Exception;
 
+    User confirmUser(User user);
+
 
 
 }

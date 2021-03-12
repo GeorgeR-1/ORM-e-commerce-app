@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
         User userCreated = userRepository.save(user);
 
-        createToken(userCreated,TokenType.CONFIRMED);
+        sendEmailWithToken(userCreated,TokenType.CONFIRMED);
 
         return userCreated;
     }
@@ -78,6 +78,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    public User confirmUser(User user){
+        User foundedUser =userRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new NoSuchElementException("This user does not exist"));
+
+        user.setIsVerified(true);
+        user.setStatus(ProductAndUserStatus.ACTIVE);
+        return userRepository.save(user);
+    }
+
+
+    @Transactional
     public void deactivateAccount(Long id) throws Exception {
 
         User foundedUser = userRepository.findById(id)
@@ -88,7 +99,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private void createToken(User user, TokenType tokenType){
+    private void sendEmailWithToken(User user, TokenType tokenType){
 
         ConfirmationToken confirmationToken = new ConfirmationToken(user, tokenType);
 
@@ -116,6 +127,7 @@ public class UserServiceImpl implements UserService {
 
         confirmationTokenService.sendEmail(mailMessage);
     }
+
 
 
 }
